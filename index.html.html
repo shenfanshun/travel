@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>🗺 旅遊小手冊</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f5f0;
+    --card: #ffffff;
+    --accent: #2d6a4f;
+    --accent3: #457b9d;
+    --text: #1a1a1a;
+    --muted: #888;
+    --border: #e0ddd6;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans TC', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: 40px; }
+
+  header { background: var(--accent); color: white; padding: 16px 16px 0; position: sticky; top: 0; z-index: 100; }
+  .header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .trip-title { font-size: 19px; font-weight: 700; }
+  .refresh-btn { background: rgba(255,255,255,0.2); border: none; color: white; border-radius: 20px; padding: 5px 12px; font-size: 12px; cursor: pointer; font-family: inherit; display: flex; align-items: center; gap: 4px; }
+  .refresh-btn:active { opacity: 0.7; }
+  .refresh-btn.spinning span { display: inline-block; animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .trip-dates { font-size: 12px; color: rgba(255,255,255,0.75); margin-bottom: 10px; }
+
+  .tabs { display: flex; gap: 6px; padding: 0 0 0; overflow-x: auto; scrollbar-width: none; padding-bottom: 0; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab { flex-shrink: 0; padding: 7px 14px; border-radius: 20px 20px 0 0; font-size: 13px; font-weight: 500; cursor: pointer; border: none; background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.85); transition: background 0.15s; }
+  .tab.active { background: var(--bg); color: var(--accent); font-weight: 700; }
+
+  main { padding: 16px; max-width: 600px; margin: 0 auto; }
+  .section { display: none; }
+  .section.active { display: block; }
+  .section-label { font-size: 11px; font-weight: 700; color: var(--muted); letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 12px; }
+
+  .card { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: 10px; overflow: hidden; }
+  .card-body { padding: 14px 14px 12px; }
+  .field-row { display: flex; gap: 8px; margin-bottom: 7px; align-items: baseline; }
+  .field-label { font-size: 11px; color: var(--muted); width: 52px; flex-shrink: 0; }
+  .field-val { font-size: 14px; font-weight: 500; flex: 1; word-break: break-all; }
+  .field-val a { color: var(--accent3); text-decoration: none; }
+  .field-val a:active { opacity: 0.7; }
+
+  .badge { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 10px; font-weight: 500; }
+  .badge-green { background: #d8f3dc; color: #1b4332; }
+  .badge-blue { background: #dbeafe; color: #1e3a5f; }
+  .badge-orange { background: #fde8d8; color: #7c2d12; }
+  .badge-yellow { background: #fef9c3; color: #713f12; }
+
+  .transport-type { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 10px; margin-bottom: 7px; font-weight: 600; }
+  .type-飛機 { background: #eff6ff; color: #1d4ed8; }
+  .type-火車 { background: #f0fdf4; color: #15803d; }
+  .type-巴士 { background: #fef3c7; color: #92400e; }
+  .type-渡輪 { background: #e0f2fe; color: #0369a1; }
+  .type-捷運 { background: #fdf4ff; color: #7e22ce; }
+  .type-其他 { background: #f1f5f9; color: #475569; }
+
+  /* Shopping */
+  .shop-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: 8px; }
+  .shop-item.done .shop-name { text-decoration: line-through; color: var(--muted); }
+  .shop-check { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 12px; margin-top: 1px; cursor: pointer; transition: background 0.15s, border-color 0.15s; }
+  .shop-item.done .shop-check { background: var(--accent); border-color: var(--accent); color: white; }
+  .shop-name { font-size: 14px; font-weight: 500; flex: 1; }
+  .shop-sub { font-size: 12px; color: var(--muted); font-weight: 400; margin-top: 2px; }
+  .shop-right { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; flex-shrink: 0; }
+  .shop-qty { font-size: 13px; color: var(--muted); }
+  .shop-price { font-size: 12px; color: var(--accent); font-weight: 500; }
+
+  .progress-bar { background: var(--border); border-radius: 10px; height: 6px; margin-bottom: 14px; overflow: hidden; }
+  .progress-fill { background: var(--accent); height: 100%; border-radius: 10px; transition: width 0.3s; }
+  .progress-label { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+
+  /* Loading / error */
+  .status-box { text-align: center; padding: 40px 20px; color: var(--muted); font-size: 14px; }
+  .status-icon { font-size: 36px; margin-bottom: 10px; }
+  .loading-dots::after { content: ''; animation: dots 1.2s steps(4, end) infinite; }
+  @keyframes dots { 0%,100%{content:'';} 25%{content:'.';} 50%{content:'..';} 75%{content:'...';} }
+
+  .last-updated { font-size: 11px; color: rgba(255,255,255,0.6); text-align: right; margin-top: 2px; margin-bottom: 8px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <div class="trip-title" id="tripTitle">🗺 旅遊小手冊</div>
+    <button class="refresh-btn" id="refreshBtn" onclick="loadAll()"><span>↻</span> 更新</button>
+  </div>
+  <div class="trip-dates" id="tripDates"></div>
+  <div class="last-updated" id="lastUpdated"></div>
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('transport',this)">✈ 交通</button>
+    <button class="tab" onclick="switchTab('spots',this)">🏛 景點</button>
+    <button class="tab" onclick="switchTab('food',this)">🍜 餐廳</button>
+    <button class="tab" onclick="switchTab('shopping',this)">🛍 採購</button>
+  </div>
+</header>
+
+<main>
+  <div class="section active" id="section-transport"><div id="list-transport"><div class="status-box"><div class="status-icon">✈️</div><div class="loading-dots">載入中</div></div></div></div>
+  <div class="section" id="section-spots"><div id="list-spots"><div class="status-box"><div class="status-icon">🏛️</div><div class="loading-dots">載入中</div></div></div></div>
+  <div class="section" id="section-food"><div id="list-food"><div class="status-box"><div class="status-icon">🍜</div><div class="loading-dots">載入中</div></div></div></div>
+  <div class="section" id="section-shopping">
+    <div class="progress-label" id="shop-progress-label"></div>
+    <div class="progress-bar"><div class="progress-fill" id="shop-progress-fill" style="width:0%"></div></div>
+    <div id="list-shopping"><div class="status-box"><div class="status-icon">🛍️</div><div class="loading-dots">載入中</div></div></div>
+  </div>
+</main>
+
+<script>
+// ── 設定區 ──────────────────────────────────────────
+const SHEET_BASE = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQphtNF7B3aU030bn2LgokLoyC5Ak5Yj8K937TM_Sw5cHjtOlKRPAazEpdo6XE3t3SCBjGjX_ONe2Kb/pub?output=csv';
+const GIDS = {
+  transport: '0',
+  spots:     '378604775',
+  food:      '708742114',
+  shopping:  '924350755',
+};
+// 如果試算表第一行有「旅程名稱」和「日期」欄位可自動讀取，
+// 或直接在下面改：
+const TRIP_TITLE = '🗺 旅遊小手冊';
+const TRIP_DATES = '';  // 例如 '2025/06/15 – 06/20'
+// ────────────────────────────────────────────────────
+
+// 採購勾選狀態存本地
+let shopChecked = {};
+try { shopChecked = JSON.parse(localStorage.getItem('shop_checked') || '{}'); } catch(e){}
+
+let db = { transport:[], spots:[], food:[], shopping:[] };
+
+document.getElementById('tripTitle').textContent = TRIP_TITLE;
+if (TRIP_DATES) document.getElementById('tripDates').textContent = TRIP_DATES;
+
+function sheetUrl(gid) {
+  return `${SHEET_BASE}&gid=${gid}&t=${Date.now()}`;
+}
+
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  if (lines.length < 2) return [];
+  const headers = splitCSVLine(lines[0]);
+  return lines.slice(1).map(line => {
+    const vals = splitCSVLine(line);
+    const obj = {};
+    headers.forEach((h, i) => { obj[h.trim()] = (vals[i] || '').trim(); });
+    return obj;
+  }).filter(row => Object.values(row).some(v => v));
+}
+
+function splitCSVLine(line) {
+  const result = [];
+  let cur = '', inQ = false;
+  for (let i = 0; i < line.length; i++) {
+    const c = line[i];
+    if (c === '"') { inQ = !inQ; }
+    else if (c === ',' && !inQ) { result.push(cur); cur = ''; }
+    else { cur += c; }
+  }
+  result.push(cur);
+  return result;
+}
+
+async function fetchSheet(gid) {
+  const res = await fetch(sheetUrl(gid));
+  if (!res.ok) throw new Error('fetch failed');
+  const text = await res.text();
+  return parseCSV(text);
+}
+
+async function loadAll() {
+  const btn = document.getElementById('refreshBtn');
+  btn.classList.add('spinning');
+  try {
+    const [transport, spots, food, shopping] = await Promise.all([
+      fetchSheet(GIDS.transport),
+      fetchSheet(GIDS.spots),
+      fetchSheet(GIDS.food),
+      fetchSheet(GIDS.shopping),
+    ]);
+    db = { transport, spots, food, shopping };
+    renderAll();
+    const now = new Date();
+    document.getElementById('lastUpdated').textContent =
+      `最後更新：${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
+  } catch(e) {
+    ['transport','spots','food','shopping'].forEach(s => {
+      document.getElementById('list-'+s).innerHTML =
+        `<div class="status-box"><div class="status-icon">⚠️</div>載入失敗，請點「更新」重試</div>`;
+    });
+  }
+  btn.classList.remove('spinning');
+}
+
+function switchTab(section, btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('section-' + section).classList.add('active');
+}
+
+function renderAll() {
+  renderTransport();
+  renderSpots();
+  renderFood();
+  renderShopping();
+}
+
+function empty(icon, text) {
+  return `<div class="status-box"><div class="status-icon">${icon}</div>${text}</div>`;
+}
+
+function esc(s) {
+  if (!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function renderTransport() {
+  const el = document.getElementById('list-transport');
+  if (!db.transport.length) { el.innerHTML = empty('✈️','試算表 transport 分頁尚無資料'); return; }
+  el.innerHTML = db.transport.map(item => `
+    <div class="card"><div class="card-body">
+      <span class="transport-type type-${esc(item.type)||'其他'}">${esc(item.type)||'其他'}</span>
+      ${item.route ? `<div class="field-row"><span class="field-label">路線</span><span class="field-val">${esc(item.route)}</span></div>` : ''}
+      ${item.date  ? `<div class="field-row"><span class="field-label">日期</span><span class="field-val">${esc(item.date)}</span></div>` : ''}
+      ${item.time  ? `<div class="field-row"><span class="field-label">時間</span><span class="field-val">${esc(item.time)}</span></div>` : ''}
+      ${item.code  ? `<div class="field-row"><span class="field-label">票號</span><span class="field-val">${esc(item.code)}</span></div>` : ''}
+      ${item.link  ? `<div class="field-row"><span class="field-label">票券/QR</span><span class="field-val"><a href="${esc(item.link)}" target="_blank">🔗 開啟連結</a></span></div>` : ''}
+      ${item.note  ? `<div class="field-row"><span class="field-label">備注</span><span class="field-val" style="color:var(--muted);font-weight:400">${esc(item.note)}</span></div>` : ''}
+    </div></div>`).join('');
+}
+
+function renderSpots() {
+  const el = document.getElementById('list-spots');
+  if (!db.spots.length) { el.innerHTML = empty('🏛️','試算表 spots 分頁尚無資料'); return; }
+  el.innerHTML = db.spots.map(item => `
+    <div class="card"><div class="card-body">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <div style="font-size:16px;font-weight:700">${esc(item.name)}</div>
+        ${item.date ? `<span class="badge badge-blue">${esc(item.date)}</span>` : ''}
+      </div>
+      ${item.hours   ? `<div class="field-row"><span class="field-label">開放</span><span class="field-val">${esc(item.hours)}</span></div>` : ''}
+      ${item.price   ? `<div class="field-row"><span class="field-label">票價</span><span class="field-val">${esc(item.price)}</span></div>` : ''}
+      ${item.address ? `<div class="field-row"><span class="field-label">地址</span><span class="field-val">${esc(item.address)}</span></div>` : ''}
+      ${item.map     ? `<div class="field-row"><span class="field-label">地圖</span><span class="field-val"><a href="${esc(item.map)}" target="_blank">🗺 開啟地圖</a></span></div>` : ''}
+      ${item.note    ? `<div class="field-row"><span class="field-label">備注</span><span class="field-val" style="color:var(--muted);font-weight:400">${esc(item.note)}</span></div>` : ''}
+    </div></div>`).join('');
+}
+
+function renderFood() {
+  const el = document.getElementById('list-food');
+  if (!db.food.length) { el.innerHTML = empty('🍜','試算表 food 分頁尚無資料'); return; }
+  el.innerHTML = db.food.map(item => `
+    <div class="card"><div class="card-body">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <div style="font-size:16px;font-weight:700">${esc(item.name)}</div>
+        <span class="badge ${item.booked==='已訂位'?'badge-green':item.booked==='待訂位'?'badge-orange':'badge-yellow'}">${esc(item.booked)||'未訂位'}</span>
+      </div>
+      ${item.date    ? `<div class="field-row"><span class="field-label">日期</span><span class="field-val">${esc(item.date)}</span></div>` : ''}
+      ${item.time    ? `<div class="field-row"><span class="field-label">時間</span><span class="field-val">${esc(item.time)}</span></div>` : ''}
+      ${item.address ? `<div class="field-row"><span class="field-label">地址</span><span class="field-val">${esc(item.address)}</span></div>` : ''}
+      ${item.map     ? `<div class="field-row"><span class="field-label">地圖</span><span class="field-val"><a href="${esc(item.map)}" target="_blank">🗺 開啟地圖</a></span></div>` : ''}
+      ${item.phone   ? `<div class="field-row"><span class="field-label">電話</span><span class="field-val"><a href="tel:${esc(item.phone)}">${esc(item.phone)}</a></span></div>` : ''}
+      ${item.note    ? `<div class="field-row"><span class="field-label">備注</span><span class="field-val" style="color:var(--muted);font-weight:400">${esc(item.note)}</span></div>` : ''}
+    </div></div>`).join('');
+}
+
+function renderShopping() {
+  const el = document.getElementById('list-shopping');
+  if (!db.shopping.length) { el.innerHTML = empty('🛍️','試算表 shopping 分頁尚無資料'); updateProgress(0,0); return; }
+  const total = db.shopping.length;
+  const done = db.shopping.filter((_, i) => shopChecked[i]).length;
+  updateProgress(done, total);
+  el.innerHTML = db.shopping.map((item, i) => `
+    <div class="shop-item ${shopChecked[i]?'done':''}" id="shop-${i}">
+      <div class="shop-check" onclick="toggleShop(${i})">${shopChecked[i]?'✓':''}</div>
+      <div style="flex:1;min-width:0">
+        <div class="shop-name">${esc(item.name)}</div>
+        ${item.note ? `<div class="shop-sub">${esc(item.note)}</div>` : ''}
+      </div>
+      <div class="shop-right">
+        ${item.qty   ? `<div class="shop-qty">${esc(item.qty)}</div>` : ''}
+        ${item.price ? `<div class="shop-price">${esc(item.price)}</div>` : ''}
+      </div>
+    </div>`).join('');
+}
+
+function toggleShop(i) {
+  shopChecked[i] = !shopChecked[i];
+  localStorage.setItem('shop_checked', JSON.stringify(shopChecked));
+  const item = document.getElementById('shop-'+i);
+  item.classList.toggle('done', shopChecked[i]);
+  item.querySelector('.shop-check').textContent = shopChecked[i] ? '✓' : '';
+  const total = db.shopping.length;
+  const done = db.shopping.filter((_,j) => shopChecked[j]).length;
+  updateProgress(done, total);
+}
+
+function updateProgress(done, total) {
+  document.getElementById('shop-progress-fill').style.width = total ? Math.round(done/total*100)+'%' : '0%';
+  document.getElementById('shop-progress-label').textContent = total ? `已完成 ${done} / ${total} 項` : '';
+}
+
+loadAll();
+</script>
+</body>
+</html>

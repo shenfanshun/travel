@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>嘉義機車用品 - 限時限量瘋狂特賣</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            light: '#ef4444',
+                            DEFAULT: '#dc2626',
+                            dark: '#991b1b',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        @keyframes pulse-slow {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.03); }
+        }
+        .animate-pulse-slow {
+            animation: pulse-slow 3s infinite;
+        }
+        @keyframes slide-in {
+            0% { transform: translateY(100px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+        .animate-slide-in {
+            animation: slide-in 0.5s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col overflow-x-hidden">
+
+    <!-- 頂部限時跑馬燈與倒數 -->
+    <div class="bg-brand text-white font-bold py-2 px-4 text-center text-xs md:text-sm sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-center gap-2">
+            <span><i class="fa-solid fa-fire-flame-curved mr-1 animate-bounce"></i> 嘉義店實體同步！全館破盤 3.8 折起，數量有限，售完即恢復原價！</span>
+            <div class="flex items-center gap-1 bg-black/30 px-3 py-0.5 rounded-full text-white">
+                <span>活動倒數：</span>
+                <span id="countdown-hours" class="bg-black/60 px-1.5 rounded font-mono">02</span>:
+                <span id="countdown-minutes" class="bg-black/60 px-1.5 rounded font-mono">14</span>:
+                <span id="countdown-seconds" class="bg-black/60 px-1.5 rounded font-mono">35</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 導航列 -->
+    <nav class="bg-slate-950/80 backdrop-blur-md border-b border-slate-800 py-4 px-6 sticky top-9 md:top-10 z-40">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <div class="bg-brand text-white p-2 rounded-lg font-black text-xl italic tracking-wider">
+                    CY-MOTO
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-bold text-lg leading-none tracking-wide text-white">嘉義機車用品</span>
+                    <span class="text-[10px] text-slate-400">CHIAYI MOTOR ACCESSORIES</span>
+                </div>
+            </div>
+            <div class="hidden md:flex items-center gap-6 text-sm text-slate-300 font-medium">
+                <a href="#features" class="hover:text-brand transition-colors">四大保障</a>
+                <a href="#hot-sale" class="hover:text-brand transition-colors">今日秒殺爆款</a>
+                <a href="#order-section" class="hover:text-brand transition-colors">快速訂購</a>
+                <a href="#store-info" class="hover:text-brand transition-colors">實體門市</a>
+            </div>
+            <div>
+                <a href="#hot-sale" class="bg-brand hover:bg-brand-dark text-white font-bold text-sm px-5 py-2.5 rounded-full shadow-lg hover:shadow-red-900/40 transition-all transform hover:-translate-y-0.5">
+                    立即搶購 <i class="fa-solid fa-chevron-right ml-1 text-xs"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero 英雄主視覺區 -->
+    <header class="relative bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 pt-16 pb-20 px-6 overflow-hidden">
+        <!-- 背景炫光裝飾 -->
+        <div class="absolute top-1/4 left-1/10 w-96 h-96 bg-brand/10 rounded-full blur-3xl -z-10"></div>
+        <div class="absolute bottom-1/4 right-1/10 w-80 h-80 bg-blue-900/10 rounded-full blur-3xl -z-10"></div>
+        
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <!-- 文字內容 -->
+            <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                <div class="inline-flex items-center gap-2 bg-brand/10 border border-brand/30 text-brand text-xs font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full">
+                    <span class="w-2 h-2 rounded-full bg-brand animate-ping"></span> 嘉義騎士專屬特賣會
+                </div>
+                <h1 class="text-4xl md:text-6xl font-black text-white leading-tight">
+                    行車必備神裝，<br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand to-orange-500">限時破盤一折起！</span>
+                </h1>
+                <p class="text-slate-300 text-base md:text-lg max-w-xl mx-auto lg:mx-0">
+                    不論是防風防水雨衣、頂級抗震手機架、還是高防護全罩安全帽。嘉義實體店面售後有保障，線上預約保留現場取貨，免費安裝，數量售完即刻下架！
+                </p>
+                
+                <!-- 優勢標籤 -->
+                <div class="grid grid-cols-3 gap-3 pt-4 max-w-md mx-auto lg:mx-0">
+                    <div class="bg-slate-900/80 border border-slate-800 p-3 rounded-xl text-center">
+                        <i class="fa-solid fa-house-chimney text-brand text-xl mb-1"></i>
+                        <p class="text-xs font-bold text-white">實體店面</p>
+                        <p class="text-[10px] text-slate-400">嘉義市區可自取</p>
+                    </div>
+                    <div class="bg-slate-900/80 border border-slate-800 p-3 rounded-xl text-center">
+                        <i class="fa-solid fa-screwdriver-wrench text-brand text-xl mb-1"></i>
+                        <p class="text-xs font-bold text-white">免費安裝</p>
+                        <p class="text-[10px] text-slate-400">特定商品免工資</p>
+                    </div>
+                    <div class="bg-slate-900/80 border border-slate-800 p-3 rounded-xl text-center">
+                        <i class="fa-solid fa-shield-halved text-brand text-xl mb-1"></i>
+                        <p class="text-xs font-bold text-white">七天保固</p>
+                        <p class="text-[10px] text-slate-400">新品瑕疵直接換</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-6">
+                    <a href="#hot-sale" class="bg-gradient-to-r from-brand to-orange-600 hover:from-brand-dark hover:to-orange-700 text-white font-extrabold text-base px-8 py-4 rounded-xl shadow-xl shadow-brand/20 hover:shadow-brand/30 transition-all transform hover:-translate-y-1 text-center">
+                        <i class="fa-solid fa-bolt mr-2 animate-pulse-slow"></i> 搶購秒殺商品
+                    </a>
+                    <a href="#order-section" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-slate-600 text-white font-bold text-base px-8 py-4 rounded-xl transition-all text-center">
+                        填單預約 / 留貨
+                    </a>
+                </div>
+            </div>
+
+            <!-- 右側：主打特價商品插圖 (精緻 SVG) -->
+            <div class="lg:col-span-5 flex justify-center relative">
+                <div class="relative w-full max-w-sm aspect-square bg-gradient-to-br from-slate-950 to-slate-900 rounded-3xl border border-slate-800 shadow-2xl p-6 flex flex-col justify-between overflow-hidden group">
+                    <!-- 點綴格紋賽車旗 -->
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-[linear-gradient(45deg,#000_25%,transparent_25%,transparent_75%,#000_75%,#000),linear-gradient(45deg,#000_25%,#333_25%,#333_75%,#000_75%,#000)] bg-[size:16px_16px] bg-[position:0_0,8px_8px] opacity-10"></div>
+                    
+                    <div class="flex justify-between items-start z-10">
+                        <span class="bg-brand text-white font-bold text-xs px-3 py-1 rounded-full uppercase tracking-wider animate-pulse">熱銷大推</span>
+                        <div class="text-right">
+                            <span class="text-xs text-slate-400 line-through">原價 $3,200</span>
+                            <p class="text-3xl font-black text-brand">$1,680</p>
+                        </div>
+                    </div>
+
+                    <!-- 機車安全帽 SVG 圖示 -->
+                    <div class="my-auto flex justify-center py-4 transform group-hover:scale-105 transition-transform duration-500">
+                        <svg class="w-48 h-48 text-slate-300 filter drop-shadow-[0_10px_15px_rgba(220,38,38,0.2)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 11a9 9 0 0 0-18 0v2a4 4 0 0 0 4 4h1a2 2 0 0 1 2 2v1h5v-1a2 2 0 0 1 2-2h1a4 4 0 0 0 4-4v-2Z" />
+                            <path d="M12 2a9 9 0 0 0-9 9h6a3 3 0 0 1 6 0h6a9 9 0 0 0-9-9Z" fill="rgba(220,38,38,0.1)"/>
+                            <path d="M3 11c0 .8.2 1.6.6 2.3L6 11H3Z" fill="currentColor"/>
+                            <path d="M21 11c0 .8-.2 1.6-.6 2.3L18 11h3Z" fill="currentColor"/>
+                            <circle cx="12" cy="11" r="2" fill="currentColor" />
+                        </svg>
+                    </div>
+
+                    <div class="z-10 space-y-2">
+                        <p class="text-xs text-brand font-bold tracking-wider">今日超殺推薦</p>
+                        <h3 class="text-xl font-bold text-white">碳纖紋防霧雙鏡全罩安全帽</h3>
+                        <div class="flex items-center justify-between text-xs text-slate-400 pt-2 border-t border-slate-800">
+                            <span>已售出 86%</span>
+                            <span class="text-orange-400 font-bold">僅剩 3 頂</span>
+                        </div>
+                        <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                            <div class="bg-gradient-to-r from-brand to-orange-500 h-full w-[86%] rounded-full"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 實體店保障說明區 -->
+    <section id="features" class="py-16 bg-slate-950 px-6 border-y border-slate-800">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center space-y-4 mb-12">
+                <span class="text-brand font-bold text-sm uppercase tracking-wider">CY-MOTO ADVANTAGE</span>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-white">在嘉義買機車用品，為什麼選我們？</h2>
+                <div class="w-20 h-1 bg-brand mx-auto rounded"></div>
+                <p class="text-slate-400 max-w-xl mx-auto text-sm md:text-base">我們在嘉義擁有實體展示，所有網路上特賣的產品均可在現場親自試穿戴、體驗，提供四大保證，購物免操心！</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <!-- 保障 1 -->
+                <div class="bg-slate-900/50 border border-slate-800 p-6 rounded-2xl hover:border-brand/40 hover:bg-slate-900 transition-all duration-300">
+                    <div class="w-12 h-12 bg-brand/10 text-brand rounded-xl flex items-center justify-center text-xl font-bold mb-4">
+                        <i class="fa-solid fa-shop"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">實體門市，售後有保固</h3>
+                    <p class="text-slate-400 text-sm">買機車配件最怕孤兒貨！我們提供嘉義實體店面，有任何問題直接過來，我們立刻為您解決，保固看得到、摸得到。</p>
+                </div>
+                <!-- 保障 2 -->
+                <div class="bg-slate-900/50 border border-slate-800 p-6 rounded-2xl hover:border-brand/40 hover:bg-slate-900 transition-all duration-300">
+                    <div class="w-12 h-12 bg-brand/10 text-brand rounded-xl flex items-center justify-center text-xl font-bold mb-4">
+                        <i class="fa-solid fa-percent"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">限量特價，全網最親民</h3>
+                    <p class="text-slate-400 text-sm">與各大品牌源頭廠家直接聯名採購，免除盤商抽成，這次限時限量特賣絕對是全台性價比天花板！</p>
+                </div>
+                <!-- 保障 3 -->
+                <div class="bg-slate-900/50 border border-slate-800 p-6 rounded-2xl hover:border-brand/40 hover:bg-slate-900 transition-all duration-300">
+                    <div class="w-12 h-12 bg-brand/10 text-brand rounded-xl flex items-center justify-center text-xl font-bold mb-4">
+                        <i class="fa-solid fa-screwdriver-wrench"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">預約自取，免費安裝</h3>
+                    <p class="text-slate-400 text-sm">線上特價預留，直接到嘉義門市自取，現場由專業師傅為您免費安裝手機架、調整安全帽頭圍，免去動手煩惱。</p>
+                </div>
+                <!-- 保障 4 -->
+                <div class="bg-slate-900/50 border border-slate-800 p-6 rounded-2xl hover:border-brand/40 hover:bg-slate-900 transition-all duration-300">
+                    <div class="w-12 h-12 bg-brand/10 text-brand rounded-xl flex items-center justify-center text-xl font-bold mb-4">
+                        <i class="fa-solid fa-truck-fast"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">現貨速發，全台超取</h3>
+                    <p class="text-slate-400 text-sm">除了店面自取，我們提供台灣本島最速物流。今日下單最快當天出貨，支援四大超商取貨付款與宅配，安全便利。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 今日秒殺爆款特價專區 -->
+    <section id="hot-sale" class="py-20 bg-slate-900 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center space-y-4 mb-16">
+                <span class="text-brand font-bold text-sm bg-brand/10 border border-brand/20 px-3 py-1 rounded-full">限時限量特價中 · 售完即止</span>
+                <h2 class="text-3xl md:text-5xl font-black text-white">🔥 今日爆款下殺區 (售完不補)</h2>
+                <p class="text-slate-400 max-w-xl mx-auto text-sm md:text-base">以下商品皆為限量優惠，庫存隨時可能歸零！喜歡請立刻按下搶購預留！</p>
+            </div>
+
+            <!-- 商品網格 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                
+                <!-- 商品 1 -->
+                <div class="bg-slate-950 rounded-2xl border border-slate-800 overflow-hidden flex flex-col h-full group hover:border-brand/40 transition-all duration-300">
+                    <div class="p-6 bg-gradient-to-b from-slate-900 to-slate-950 flex justify-center items-center h-48 relative overflow-hidden">
+                        <span class="absolute top-3 left-3 bg-brand text-white text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wider z-10">現省 $1,520</span>
+                        <!-- SVG 安全帽 -->
+                        <svg class="w-32 h-32 text-slate-400 filter drop-shadow-md group-hover:scale-105 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M21 11a9 9 0 0 0-18 0v2a4 4 0 0 0 4 4h1a2 2 0 0 1 2 2v1h5v-1a2 2 0 0 1 2-2h1a4 4 0 0 0 4-4v-2Z" />
+                            <path d="M12 2a9 9 0 0 0-9 9h6a3 3 0 0 1 6 0h6a9 9 0 0 0-9-9Z" fill="rgba(239,68,68,0.1)"/>
+                        </svg>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
+                        <div class="space-y-2">
+                            <div class="flex items-center gap-1.5 text-xs text-orange-400 font-bold">
+                                <i class="fa-solid fa-hourglass-half"></i> 剩餘最後 3 頂
+                            </div>
+                            <h3 class="text-lg font-bold text-white group-hover:text-brand transition-colors line-clamp-1">雙鏡片防霧全罩式安全帽</h3>
+                            <p class="text-xs text-slate-400 line-clamp-2">符合國家CNS認證，高防護內襯可拆洗，防霧大鏡片，騎士行車必備神裝。</p>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-baseline justify-between">
+                                <span class="text-xs text-slate-500 line-through">原價 $3,200</span>
+                                <div class="flex items-baseline gap-1">
+                                    <span class="text-xs text-brand font-bold">特價</span>
+                                    <span class="text-2xl font-black text-brand">$1,680</span>
+                                </div>
+                            </div>
+                            <!-- 限量條 -->
+                            <div class="space-y-1">
+                                <div class="flex justify-between text-[10px] text-slate-400">
+                                    <span>限量 15 頂 / 已搶購 12 頂</span>
+                                    <span class="font-bold text-orange-400">80%</span>
+                                </div>
+                                <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                                    <div class="bg-gradient-to-r from-brand to-orange-500 h-full w-[80%] rounded-full"></div>
+                                </div>
+                            </div>
+                            <button onclick="selectProduct('雙鏡片防霧全罩式安全帽', 1680)" class="w-full bg-slate-800 hover:bg-brand text-white hover:text-white font-bold py-3 px-4 rounded-xl transition-all flex items-center justify-center gap-2 group/btn">
+                                <span>立即搶購</span> <i class="fa-solid fa-arrow-right text-xs group-hover/btn:translate-x-1 transition-transform"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 商品 2 -->
+                <div class="bg-slate-950 rounded-2xl border border-slate-800 overflow-hidden flex flex-col h-full group hover:border-brand/40 transition-all duration-300">
+                    <div class="p-6 bg-gradient-to-b from-slate-900 to-slate-950 flex justify-center items-center h-48 relative overflow-hidden">
+                        <span class="absolute top-3 left-3 bg-brand text-white text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wider z-10">現省 $601</span>
+                        <!-- SVG 手機架 -->
+                        <svg class="w-32 h-32 text-slate-400 filter drop-shadow-md group-hover:scale-105 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <rect x="5" y="2" width="14" height="20" rx="2" fill="rgba(239,68,68,0.05)"/>
+                            <path d="M12 18h.01" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M8 5h8M8 19h8" stroke-opacity="0.5"/>
+                            <path d="M3 10h2M19 10h2" stroke-width="2"/>
+                            <path d="M2 13h4M18 13h4" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
+                        <div class="space-y-2">
+                            <div class="flex items-center gap-1.5 text-xs text-orange-400 font-bold">
+                                <i class="fa-solid fa-hourglass-half"></i> 剩餘最後 5 組
+                            </div>
+                            <h3 class="text-lg font-bold text-white group-hover:text-brand transition-colors line-clamp-1">五爪金屬防震減震手機架</h3>
+                            <p class="text-xs text-slate-400 line-clamp-2">鋁合金超穩固支架，自帶避震橡膠墊，一鍵鎖定，支援各式外送、導航需求。</p>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-baseline justify-between">
+                                <span class="text-xs text-slate-500 line-through">原價 $1,200</span>
+                                <div class="flex items-baseline gap-1">
+                                    <span class="text-xs text-brand font-bold">特價</span>
+                                    <span class="text-2xl font-black text-brand">$599</span>
+                                </div>
+                            </div>
+                            <!-- 限量條 -->
+                            <div class="space-y-1">
+                                <div class="flex justify-between text-[10px] text-slate-400">
+                                    <span>限量 30 組 / 已搶購 25 組</span>
+                                    <span class="font-bold text-orange-400">83%</span>
+                                </div>
+                                <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                                    <div class="bg-gradient-to-r from-brand to-orange-500 h-full w-[83%] rounded-full"></div>
+                                </div>
+                            </div>
+                            <button onclick="selectProduct('五爪金屬防震減震手機架', 599)" class="w-full bg-slate-800 hover:bg-brand text-white hover:text-white font-bold py-3 px-4 rounded-xl transition-all flex items-center justify-center gap-2 group/btn">
+                                <span>立即搶購</span> <i class="fa-solid fa-arrow-right text-xs group-hover/btn:translate-x-1 transition-transform"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 商品 3 -->
+                <div class="bg-slate-950 rounded-2xl border border-slate-800 overflow-hidden flex flex-col h-full group hover:border-brand/40 transition-all duration-300">
+                    <div class="p-6 bg-gradient-to-b from-slate-900 to-slate-950 flex justify-center items-center h-48 relative overflow-hidden">
+                        <span class="absolute top-3 left-3 bg-brand text-white text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wider z-10">現省 $530</span>
+                        <!-- SVG 雨衣 -->
+                        <svg class="w-32 h-32 text-slate-400 filter drop-shadow-md group-hover:scale-105 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M20.38 8.57 12 4.5l-8.38 4.07A2 2 0 0 0 2.5 10.38V19a2 2 0 0 0 2 2h15a2 2 0 0 0 2-2v-8.62a2 2 0 0 0-1.12-1.81Z" fill="rgba(239,68,68,0.05)"/>
+                            <path d="M12 4.5V21M3.5 10H20.5" />
+                        </svg>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
+                        <div class="space-y-2">
+                            <div class="flex items-center gap-1.5 text-xs text-orange-400 font-bold">
+                                <i class="fa-solid fa-hourglass-half"></i> 剩餘最後 8 件
+                            </div>
+                            <h3 class="text-lg font-bold text-white group-hover:text-brand transition-colors line-clamp-1">雙拉鍊高質感防風雨衣</h3>
+                            <p class="text-xs text-slate-400 line-clamp-2">網紗內裡不黏身，獨家雙拉鍊不漏水設計。加長反光條，梅雨季節行車安全第一！</p>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-baseline justify-between">
+                                <span class="text-xs text-slate-500 line-through">原價 $980</span>
+                                <div class="flex items-baseline gap-1">
+                                    <span class="text-xs text-brand font-bold">特價</span>
+                                    <span class="text-2xl font-black text-brand">$450</span>
+                                </div>
+                            </div>
+                            <!-- 限量條 -->
+                            <div class="space-y-1">
+                                <div class="flex justify-between text-[10px] text-slate-400">
+                                    <span>限量 50 件 / 已搶購 42 件</span>
+                                    <span class="font-bold text-orange-400">84%</span>
+                                </div>
+                                <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                                    <div class="bg-gradient-to-r from-brand to-orange-500 h-full w-[84%] rounded-full"></div>
+                                </div>
+                            </div>
+                            <button onclick="selectProduct('雙拉鍊高質感防風雨衣', 450)" class="w-full bg-slate-800 hover:bg-brand text-white hover:text-white font-bold py-3 px-4 rounded-xl transition-all flex items-center justify-center gap-2 group/btn">
+                                <span>立即搶購</span> <i class="fa-solid fa-arrow-right text-xs group-hover/btn:translate-x-1 transition-transform"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 商品 4 -->
+                <div class="bg-slate-950 rounded-2xl border border-slate-800 overflow-hidden flex flex-col h-full group hover:border-brand/40 transition-all duration-300">
+                    <div class="p-6 bg-gradient-to-b from-slate-900 to-slate-950 flex justify-center items-center h-48 relative overflow-hidden">
+                        <span class="absolute top-3 left-3 bg-brand text-white text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wider z-10">現省 $451</span>
+                        <!-- SVG 車套 -->
+                        <svg class="w-32 h-32 text-slate-400 filter drop-shadow-md group-hover:scale-105 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-1.1 0-2 .9-2 2v5c0 .6.4 1 1 1h2" fill="rgba(239,68,68,0.05)"/>
+                            <circle cx="7" cy="17" r="2" />
+                            <circle cx="17" cy="17" r="2" />
+                        </svg>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
+                        <div class="space-y-2">
+                            <div class="flex items-center gap-1.5 text-xs text-orange-400 font-bold">
+                                <i class="fa-solid fa-hourglass-half"></i> 剩餘最後 4 件
+                            </div>
+                            <h3 class="text-lg font-bold text-white group-hover:text-brand transition-colors line-clamp-1">機車防刮隔熱防塵車套</h3>
+                            <p class="text-xs text-slate-400 line-clamp-2">抗UV、防刮、高隔熱、防水。保護您的愛車漆面不褪色，安裝、收納皆極速完成。</p>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-baseline justify-between">
+                                <span class="text-xs text-slate-500 line-through">原價 $850</span>
+                                <div class="flex items-baseline gap-1">
+                                    <span class="text-xs text-brand font-bold">特價</span>
+                                    <span class="text-2xl font-black text-brand">$399</span>
+                                </div>
+                            </div>
+                            <!-- 限量條 -->
+                            <div class="space-y-1">
+                                <div class="flex justify-between text-[10px] text-slate-400">
+                                    <span>限量 25 件 / 已搶購 21 件</span>
+                                    <span class="font-bold text-orange-400">84%</span>
+                                </div>
+                                <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                                    <div class="bg-gradient-to-r from-brand to-orange-500 h-full w-[84%] rounded-full"></div>
+                                </div>
+                            </div>
+                            <button onclick="selectProduct('機車防刮隔熱防塵車套', 399)" class="w-full bg-slate-800 hover:bg-brand text-white hover:text-white font-bold py-3 px-4 rounded-xl transition-all flex items-center justify-center gap-2 group/btn">
+                                <span>立即搶購</span> <i class="fa-solid fa-arrow-right text-xs group-hover/btn:translate-x-1 transition-transform"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 實體店與快速聯絡 -->
+    <section id="store-info" class="py-16 bg-slate-950 px-6 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <!-- 左側地圖或店面插圖 -->
+            <div class="lg:col-span-6 space-y-4">
+                <div class="bg-slate-900 border border-slate-800 p-8 rounded-3xl space-y-6">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-brand/10 text-brand rounded-full flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-location-dot"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm text-slate-400">嘉義實體門市</p>
+                            <h3 class="text-2xl font-bold text-white">嘉義機車用品店</h3>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3 text-slate-300 text-sm">
+                        <p class="flex items-center gap-3">
+                            <i class="fa-solid fa-map-location-dot text-brand w-5 text-center"></i>
+                            <span>門市地址：嘉義市東區中山路 (近嘉義火車站 / 現場有專屬停車格)</span>
+                        </p>
+                        <p class="flex items-center gap-3">
+                            <i class="fa-solid fa-clock text-brand w-5 text-center"></i>
+                            <span>營業時間：週一至週日 10:00 - 22:00 (例假日照常營業)</span>
+                        </p>
+                        <p class="flex items-center gap-3">
+                            <i class="fa-solid fa-phone text-brand w-5 text-center"></i>
+                            <span>客服熱線：05-223-XXXX / 0912-345-678</span>
+                        </p>
+                        <p class="flex items-center gap-3 text-orange-400">
+                            <i class="fa-solid fa-circle-info w-5 text-center"></i>
+                            <span>溫馨提示：線上預約保留，現場自取提供免費安裝諮詢服務！</span>
+                        </p>
+                    </div>
+
+                    <!-- 虛擬地圖區 -->
+                    <div class="h-48 bg-slate-950 rounded-2xl flex items-center justify-center border border-slate-800 relative overflow-hidden">
+                        <div class="absolute inset-0 opacity-20 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                        <!-- 模擬嘉義市地圖標點 -->
+                        <div class="relative flex flex-col items-center">
+                            <div class="w-10 h-10 bg-brand text-white rounded-full flex items-center justify-center animate-bounce shadow-lg shadow-brand/40">
+                                <i class="fa-solid fa-motorcycle"></i>
+                            </div>
+                            <span class="bg-slate-900 border border-slate-800 text-xs px-2 py-1 rounded shadow-md mt-2 font-bold text-white">中山路門市在這邊！</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右側：信任指標與推薦 -->
+            <div class="lg:col-span-6 space-y-6">
+                <span class="text-brand font-bold text-sm uppercase tracking-wider">USER FEEDBACK</span>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-white">嘉義車友 真實口碑推薦</h2>
+                <div class="w-20 h-1 bg-brand rounded"></div>
+
+                <div class="space-y-4">
+                    <!-- 評價 1 -->
+                    <div class="bg-slate-900/50 p-5 rounded-2xl border border-slate-800">
+                        <div class="flex justify-between items-start mb-2">
+                            <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-xs font-bold text-white">
+                                    林
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-bold text-white">林*勳 (嘉大騎士)</h4>
+                                    <p class="text-[10px] text-slate-500">已購買：防震手機架</p>
+                                </div>
+                            </div>
+                            <div class="flex text-amber-400 text-xs gap-0.5">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                            </div>
+                        </div>
+                        <p class="text-slate-300 text-xs md:text-sm">
+                            「手機架在店裡買的，老闆當場幫我裝好，還指導我怎麼調避震阻尼！超殺價格又有實體店售後，真的比網購有保障多了。」
+                        </p>
+                    </div>
+
+                    <!-- 評價 2 -->
+                    <div class="bg-slate-900/50 p-5 rounded-2xl border border-slate-800">
+                        <div class="flex justify-between items-start mb-2">
+                            <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-xs font-bold text-white">
+                                    張
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-bold text-white">張*美 (外送夥伴)</h4>
+                                    <p class="text-[10px] text-slate-500">已購買：雙拉鍊雨衣 + 安全帽</p>
+                                </div>
+                            </div>
+                            <div class="flex text-amber-400 text-xs gap-0.5">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                            </div>
+                        </div>
+                        <p class="text-slate-300 text-xs md:text-sm">
+                            「下雨天穿這件雙拉鍊雨衣真的沒漏過，全罩安全帽戴起來也很貼合很舒服。這種特惠限量真的很划算，推薦嘉義車友必衝！」
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 快速訂購表單區 -->
+    <section id="order-section" class="py-20 bg-slate-900 px-6">
+        <div class="max-w-3xl mx-auto">
+            <div class="bg-slate-950 border-2 border-brand/50 rounded-3xl p-6 md:p-10 shadow-2xl relative">
+                
+                <!-- 熱賣標籤 -->
+                <div class="absolute -top-5 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-brand to-orange-600 text-white font-black px-6 py-2 rounded-full shadow-lg text-sm tracking-wide flex items-center gap-2 animate-bounce">
+                    <i class="fa-solid fa-cart-shopping"></i> 極速搶購留貨單
+                </div>
+
+                <div class="text-center space-y-2 mt-4 mb-8">
+                    <h2 class="text-2xl md:text-3xl font-black text-white">搶先預約保留限量名額</h2>
+                    <p class="text-xs md:text-sm text-slate-400">請填寫下方基本資料，我們將為您預留名額。填單不需先付款，門市取貨或到付更安心！</p>
+                </div>
+
+                <form id="orderForm" onsubmit="handleOrderSubmit(event)" class="space-y-6">
+                    <!-- 商品選擇 -->
+                    <div>
+                        <label class="block text-slate-300 text-sm font-bold mb-2">
+                            <i class="fa-solid fa-gift text-brand mr-1"></i> 預留特惠商品 (可多選/單選)
+                        </label>
+                        <select id="orderProduct" class="w-full bg-slate-900 border border-slate-800 text-white rounded-xl px-4 py-3.5 focus:ring-2 focus:ring-brand focus:border-brand outline-none transition-all text-sm font-medium" required>
+                            <option value="" disabled selected>-- 請選擇特惠商品 --</option>
+                            <option value="雙鏡片防霧全罩式安全帽" data-price="1680">雙鏡片防霧全罩式安全帽 (特價 $1,680) 💥 僅剩3件</option>
+                            <option value="五爪金屬防震減震手機架" data-price="599">五爪金屬防震減震手機架 (特價 $599) 💥 僅剩5件</option>
+                            <option value="雙拉鍊高質感防風雨衣" data-price="450">雙拉鍊高質感防風雨衣 (特價 $450) 💥 僅剩8件</option>
+                            <option value="機車防刮隔熱防塵車套" data-price="399">機車防刮隔熱防塵車套 (特價 $399) 💥 僅剩4件</option>
+                        </select>
+                    </div>
+
+                    <!-- 數量 -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-slate-300 text-sm font-bold mb-2">
+                                <i class="fa-solid fa-list-ol text-brand mr-1"></i> 購買數量
+                            </label>
+                            <select id="orderQty" class="w-full bg-slate-900 border border-slate-800 text-white rounded-xl px-4 py-3.5 focus:ring-2 focus:ring-brand focus:border-brand outline-none transition-all text-sm" onchange="calculateTotal()">
+                                <option value="1">1 件</option>
+                                <option value="2">2 件</option>
+                                <option value="3">3 件</option>
+                                <option value="4">4 件</option>
+                                <option value="5">5 件</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-slate-300 text-sm font-bold mb-2">
+                                <i class="fa-solid fa-wallet text-brand mr-1"></i> 合計金額 (不含運)
+                            </label>
+                            <div class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-3.5 text-brand font-black text-xl flex items-center">
+                                TWD $ <span id="totalPrice" class="ml-1">0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 姓名 & 電話 -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-slate-300 text-sm font-bold mb-2" for="customerName">
+                                <i class="fa-solid fa-user text-brand mr-1"></i> 訂購人姓名 <span class="text-brand">*</span>
+                            </label>
+                            <input type="text" id="customerName" placeholder="請輸入姓名" class="w-full bg-slate-900 border border-slate-800 text-white rounded-xl px-4 py-3.5 focus:ring-2 focus:ring-brand focus:border-brand outline-none transition-all text-sm" required>
+                        </div>
+                        <div>
+                            <label class="block text-slate-300 text-sm font-bold mb-2" for="customerPhone">
+                                <i class="fa-solid fa-phone text-brand mr-1"></i> 行動電話 <span class="text-brand">*</span>
+                            </label>
+                            <input type="tel" id="customerPhone" placeholder="例如：0912345678" class="w-full bg-slate-900 border border-slate-800 text-white rounded-xl px-4 py-3.5 focus:ring-2 focus:ring-brand focus:border-brand outline-none transition-all text-sm" required>
+                        </div>
+                    </div>
+
+                    <!-- 取貨方式 -->
+                    <div>
+                        <label class="block text-slate-300 text-sm font-bold mb-2">
+                            <i class="fa-solid fa-truck text-brand mr-1"></i> 配送方式
+                        </label>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                            <label class="flex items-center gap-3 bg-slate-900 border border-slate-800 rounded-xl p-4 cursor-pointer hover:border-brand/50 transition-all">
+                                <input type="radio" name="deliveryMethod" value="嘉義店自取" checked class="text-brand focus:ring-brand" onclick="toggleAddressField(false)">
+                                <span class="text-sm text-slate-200 font-bold">嘉義實體店自取</span>
+                            </label>
+                            <label class="flex items-center gap-3 bg-slate-900 border border-slate-800 rounded-xl p-4 cursor-pointer hover:border-brand/50 transition-all">
+                                <input type="radio" name="deliveryMethod" value="超商取貨付款" class="text-brand focus:ring-brand" onclick="toggleAddressField(true, '超商分店名稱')">
+                                <span class="text-sm text-slate-200 font-bold">超商取貨付款</span>
+                            </label>
+                            <label class="flex items-center gap-3 bg-slate-900 border border-slate-800 rounded-xl p-4 cursor-pointer hover:border-brand/50 transition-all">
+                                <input type="radio" name="deliveryMethod" value="宅配到府" class="text-brand focus:ring-brand" onclick="toggleAddressField(true, '宅配收件地址')">
+                                <span class="text-sm text-slate-200 font-bold">宅配到府</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 收件地址 / 備註 -->
+                    <div id="addressContainer" class="hidden">
+                        <label id="addressLabel" class="block text-slate-300 text-sm font-bold mb-2" for="deliveryAddress">
+                            <i class="fa-solid fa-house-laptop text-brand mr-1"></i> 收件地址/分店名稱 <span class="text-brand">*</span>
+                        </label>
+                        <input type="text" id="deliveryAddress" placeholder="請輸入收件地址或超商門市名稱" class="w-full bg-slate-900 border border-slate-800 text-white rounded-xl px-4 py-3.5 focus:ring-2 focus:ring-brand focus:border-brand outline-none transition-all text-sm">
+                    </div>
+
+                    <!-- 備註 -->
+                    <div>
+                        <label class="block text-slate-300 text-sm font-bold mb-2" for="orderNotes">
+                            <i class="fa-solid fa-message text-brand mr-1"></i> 備註 (若安全帽請備註顏色/尺寸，如 M/L/XL)
+                        </label>
+                        <textarea id="orderNotes" rows="2" placeholder="請註明商品顏色、尺寸或其他特殊需求" class="w-full bg-slate-900 border border-slate-800 text-white rounded-xl px-4 py-3.5 focus:ring-2 focus:ring-brand focus:border-brand outline-none transition-all text-sm"></textarea>
+                    </div>
+
+                    <!-- 隱私權條款 -->
+                    <div class="text-[11px] text-slate-500 leading-relaxed">
+                        * 送出表單代表您同意，我們得於辦理本次限量特價預訂業務之必要範圍內，蒐集、處理及利用您所提供的個人資料。
+                    </div>
+
+                    <!-- 提交按鈕 -->
+                    <button type="submit" class="w-full bg-gradient-to-r from-brand to-orange-600 hover:from-brand-dark hover:to-orange-700 text-white font-black text-lg py-4 px-6 rounded-2xl shadow-xl shadow-brand/20 hover:shadow-brand/40 transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-check-double text-xl"></i> 送出預約搶購單 (貨到付)
+                    </button>
+                </form>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 常見問答 FAQs -->
+    <section class="py-16 bg-slate-950 px-6 border-t border-slate-800">
+        <div class="max-w-3xl mx-auto">
+            <div class="text-center space-y-4 mb-12">
+                <span class="text-brand font-bold text-sm uppercase tracking-wider">QUESTIONS & ANSWERS</span>
+                <h2 class="text-3xl font-extrabold text-white">常見問題 FAQs</h2>
+                <div class="w-20 h-1 bg-brand mx-auto rounded"></div>
+            </div>
+
+            <div class="space-y-4">
+                <!-- FAQ 1 -->
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
+                    <button onclick="toggleFaq(1)" class="w-full px-6 py-4 text-left font-bold text-white hover:text-brand flex justify-between items-center transition-colors">
+                        <span>請問特惠商品可以現場試戴試用嗎？</span>
+                        <i id="faq-icon-1" class="fa-solid fa-chevron-down text-xs transition-transform"></i>
+                    </button>
+                    <div id="faq-ans-1" class="hidden px-6 pb-5 text-sm text-slate-400 border-t border-slate-800/50 pt-3">
+                        可以的！我們在嘉義市設有實體門市，強烈建議您線上填單保留特惠名額後，前來現場試戴安全帽確認頭圍、試穿雨衣，確保尺寸完全合適後再行取貨。
+                    </div>
+                </div>
+
+                <!-- FAQ 2 -->
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
+                    <button onclick="toggleFaq(2)" class="w-full px-6 py-4 text-left font-bold text-white hover:text-brand flex justify-between items-center transition-colors">
+                        <span>線上預約搶購需要先付訂金嗎？</span>
+                        <i id="faq-icon-2" class="fa-solid fa-chevron-down text-xs transition-transform"></i>
+                    </button>
+                    <div id="faq-ans-2" class="hidden px-6 pb-5 text-sm text-slate-400 border-t border-slate-800/50 pt-3">
+                        完全不需要先付款！此一頁式網站為限量登記預約。如果您選擇「自取」，請到店取貨時付款即可；若選擇「宅配」或「超商」，我們提供「貨到付款」服務，對您的保障最完整。
+                    </div>
+                </div>
+
+                <!-- FAQ 3 -->
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
+                    <button onclick="toggleFaq(3)" class="w-full px-6 py-4 text-left font-bold text-white hover:text-brand flex justify-between items-center transition-colors">
+                        <span>手機架有提供保固或安裝服務嗎？</span>
+                        <i id="faq-icon-3" class="fa-solid fa-chevron-down text-xs transition-transform"></i>
+                    </button>
+                    <div id="faq-ans-3" class="hidden px-6 pb-5 text-sm text-slate-400 border-t border-slate-800/50 pt-3">
+                        有的！只要在此一頁式特價檔期購買手機架，到店取貨即可享有「現場免費專業安裝與調校」服務（不收安裝費）。產品自取貨日起，皆享有非人為損壞保固七天，新品瑕疵直接現場換新。
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 頁尾 -->
+    <footer class="bg-slate-950 py-12 px-6 border-t border-slate-900 text-center space-y-6">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-2">
+                <div class="bg-brand text-white p-2 rounded-lg font-black text-lg italic tracking-wider">
+                    CY-MOTO
+                </div>
+                <div class="text-left">
+                    <span class="font-bold text-base leading-none block text-white">嘉義機車用品</span>
+                    <span class="text-[10px] text-slate-500">版權所有 © 2026 嘉義機車用品店. All Rights Reserved.</span>
+                </div>
+            </div>
+            <div class="flex gap-4 text-slate-400 text-xs">
+                <span class="hover:text-brand cursor-pointer">隱私權政策</span>
+                <span>|</span>
+                <span class="hover:text-brand cursor-pointer">服務條款</span>
+                <span>|</span>
+                <span class="hover:text-brand cursor-pointer">門市退換貨須知</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 成功訂購彈窗 (非原生 alert) -->
+    <div id="successModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-slate-900 border border-slate-800 max-w-md w-full rounded-3xl p-8 text-center space-y-6 animate-slide-in relative">
+            <div class="w-20 h-20 bg-emerald-500/10 text-emerald-500 rounded-full flex items-center justify-center text-4xl mx-auto border border-emerald-500/20">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            
+            <div class="space-y-2">
+                <h3 class="text-2xl font-black text-white">🎉 搶購登記成功！</h3>
+                <p class="text-slate-400 text-sm">我們已為您鎖定保留限量名額！</p>
+            </div>
+
+            <!-- 訂單摘要 -->
+            <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 text-left space-y-2 text-xs md:text-sm">
+                <p class="text-slate-400">訂購姓名：<span id="resName" class="text-white font-bold"></span></p>
+                <p class="text-slate-400">聯絡電話：<span id="resPhone" class="text-white font-bold"></span></p>
+                <p class="text-slate-400">保留商品：<span id="resProduct" class="text-brand font-bold"></span></p>
+                <p class="text-slate-400">總計金額：<span class="text-emerald-400 font-bold">TWD $ <span id="resPrice"></span></span></p>
+                <p class="text-slate-400">領取方式：<span id="resDelivery" class="text-white font-bold"></span></p>
+            </div>
+
+            <p class="text-xs text-orange-400">門市專員將於 24 小時內致電確認細節，請保持電話暢通！</p>
+
+            <button onclick="closeModal()" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-3.5 px-6 rounded-xl transition-all">
+                好的，我知道了
+            </button>
+        </div>
+    </div>
+
+    <!-- 實時動態訂單氣泡 (增加 FOMO 熱銷感) -->
+    <div id="fomoBubble" class="fixed bottom-6 left-6 z-40 bg-slate-950/90 border border-slate-800 p-4 rounded-2xl shadow-2xl flex items-center gap-3 max-w-sm hidden transition-all duration-500 hover:scale-105">
+        <div class="w-10 h-10 rounded-full bg-brand/10 text-brand flex items-center justify-center text-lg">
+            <i class="fa-solid fa-bolt"></i>
+        </div>
+        <div>
+            <p id="fomoText" class="text-xs text-slate-300 font-bold"></p>
+            <p class="text-[10px] text-slate-500">剛剛完成限時登記</p>
+        </div>
+        <button onclick="hideFomo()" class="text-slate-500 hover:text-slate-300 ml-2">
+            <i class="fa-solid fa-xmark text-xs"></i>
+        </button>
+    </div>
+
+    <script>
+        // 初始化與倒數計時
+        let timer;
+        function startCountdown() {
+            let hours = 2;
+            let minutes = 14;
+            let seconds = 35;
+
+            timer = setInterval(() => {
+                if (seconds > 0) {
+                    seconds--;
+                } else {
+                    if (minutes > 0) {
+                        minutes--;
+                        seconds = 59;
+                    } else {
+                        if (hours > 0) {
+                            hours--;
+                            minutes = 59;
+                            seconds = 59;
+                        } else {
+                            // 時間到，重設一個模擬時間保持網頁銷售感
+                            hours = 3;
+                            minutes = 45;
+                            seconds = 12;
+                        }
+                    }
+                }
+                document.getElementById('countdown-hours').textContent = String(hours).padStart(2, '0');
+                document.getElementById('countdown-minutes').textContent = String(minutes).padStart(2, '0');
+                document.getElementById('countdown-seconds').textContent = String(seconds).padStart(2, '0');
+            }, 1000);
+        }
+
+        // 當點擊特惠產品的「立即搶購」時
+        function selectProduct(productName, price) {
+            const selectEl = document.getElementById('orderProduct');
+            
+            // 尋找對應的 Option 並選取它
+            for (let i = 0; i < selectEl.options.length; i++) {
+                if (selectEl.options[i].value === productName) {
+                    selectEl.selectedIndex = i;
+                    break;
+                }
+            }
+            
+            calculateTotal();
+
+            // 平滑滾動到訂購表單
+            const orderSection = document.getElementById('order-section');
+            orderSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // 計算合計金額
+        function calculateTotal() {
+            const selectEl = document.getElementById('orderProduct');
+            const qtyEl = document.getElementById('orderQty');
+            const priceSpan = document.getElementById('totalPrice');
+
+            const selectedOption = selectEl.options[selectEl.selectedIndex];
+            if (selectedOption && selectedOption.dataset.price) {
+                const unitPrice = parseInt(selectedOption.dataset.price);
+                const qty = parseInt(qtyEl.value);
+                priceSpan.textContent = (unitPrice * qty).toLocaleString();
+            } else {
+                priceSpan.textContent = '0';
+            }
+        }
+
+        // 切換地址輸入欄
+        function toggleAddressField(show, placeholderText) {
+            const container = document.getElementById('addressContainer');
+            const label = document.getElementById('addressLabel');
+            const input = document.getElementById('deliveryAddress');
+
+            if (show) {
+                container.classList.remove('hidden');
+                label.innerHTML = `<i class="fa-solid fa-location-dot text-brand mr-1"></i> ${placeholderText} <span class="text-brand">*</span>`;
+                input.placeholder = `請填寫您的${placeholderText}`;
+                input.required = true;
+            } else {
+                container.classList.add('hidden');
+                input.required = false;
+                input.value = '';
+            }
+        }
+
+        // FAQ 收合與開展
+        function toggleFaq(index) {
+            const ans = document.getElementById(`faq-ans-${index}`);
+            const icon = document.getElementById(`faq-icon-${index}`);
+
+            if (ans.classList.contains('hidden')) {
+                ans.classList.remove('hidden');
+                icon.classList.add('rotate-180');
+            } else {
+                ans.classList.add('hidden');
+                icon.classList.remove('rotate-180');
+            }
+        }
+
+        // 表單送出處理
+        function handleOrderSubmit(e) {
+            e.preventDefault();
+
+            // 獲取表單數值
+            const product = document.getElementById('orderProduct').value;
+            const qty = document.getElementById('orderQty').value;
+            const name = document.getElementById('customerName').value;
+            const phone = document.getElementById('customerPhone').value;
+            const delivery = document.querySelector('input[name="deliveryMethod"]:checked').value;
+            const address = document.getElementById('deliveryAddress').value;
+
+            // 計算最終價格
+            const selectEl = document.getElementById('orderProduct');
+            const selectedOption = selectEl.options[selectEl.selectedIndex];
+            const unitPrice = parseInt(selectedOption.dataset.price);
+            const finalPrice = (unitPrice * qty).toLocaleString();
+
+            // 將資料填入自訂彈窗
+            document.getElementById('resName').textContent = name;
+            document.getElementById('resPhone').textContent = phone;
+            document.getElementById('resProduct').textContent = `${product} (${qty}件)`;
+            document.getElementById('resPrice').textContent = finalPrice;
+            document.getElementById('resDelivery').textContent = delivery + (address ? ` - ${address}` : '');
+
+            // 顯示彈窗
+            document.getElementById('successModal').classList.remove('hidden');
+        }
+
+        // 關閉訂單成功彈窗並重設表單
+        function closeModal() {
+            document.getElementById('successModal').classList.add('hidden');
+            document.getElementById('orderForm').reset();
+            document.getElementById('addressContainer').classList.add('hidden');
+            calculateTotal();
+        }
+
+        // 實時 FOMO 氣泡效果：模擬其他人在嘉義的購買動態
+        const sampleCustomers = [
+            { name: "民雄 許先生", product: "五爪金屬防震減震手機架" },
+            { name: "水上 曾小姐", product: "雙鏡片防霧全罩式安全帽" },
+            { name: "嘉義西區 吳先生", product: "雙拉鍊高質感防風雨衣" },
+            { name: "大林 賴先生", product: "機車防刮隔熱防塵車套" },
+            { name: "朴子 蔡小姐", product: "雙鏡片防霧全罩式安全帽" },
+            { name: "嘉義東區 李先生", product: "五爪金屬防震減震手機架" }
+        ];
+
+        function showFomo() {
+            const bubble = document.getElementById('fomoBubble');
+            const textEl = document.getElementById('fomoText');
+            
+            const randomPick = sampleCustomers[Math.floor(Math.random() * sampleCustomers.length)];
+            textEl.innerHTML = `<span class="text-brand font-bold">${randomPick.name}</span> 搶購了 [${randomPick.product}]`;
+            
+            bubble.classList.remove('hidden');
+            bubble.style.opacity = '1';
+
+            // 7秒後自動隱藏
+            setTimeout(() => {
+                hideFomo();
+            }, 7000);
+        }
+
+        function hideFomo() {
+            const bubble = document.getElementById('fomoBubble');
+            bubble.style.opacity = '0';
+            setTimeout(() => {
+                bubble.classList.add('hidden');
+            }, 500);
+        }
+
+        // 定期重複 FOMO 購買訊息
+        function startFomoCycle() {
+            // 每隔 15~25 秒出現一次
+            setInterval(() => {
+                showFomo();
+            }, Math.random() * 10000 + 15000);
+        }
+
+        // 初始化
+        window.onload = function () {
+            startCountdown();
+            // 監聽商品更動以隨時更新總價
+            document.getElementById('orderProduct').addEventListener('change', calculateTotal);
+            // 啟動 FOMO 氣泡循環
+            setTimeout(showFomo, 3000);
+            startFomoCycle();
+        };
+    </script>
+</body>
+</html>
